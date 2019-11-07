@@ -3,7 +3,7 @@ pipeline {
 
    stages {
       stage('GIT+MVN') {
-         agent build
+         agent {build}
             tools {
                maven "LocalMaven"
                jdk "LocalJDK8"
@@ -22,7 +22,7 @@ pipeline {
       }
     
         stage('git-mvn-checkstyle-pwd') {
-             agent quality
+             agent {quality}
                 tools {
                   maven "LocalMaven"
                   jdk "LocalJDK8"
@@ -33,7 +33,7 @@ pipeline {
                 echo "sacar reportes"
                 }
             post {
-                agent deploy
+                agent {deploy}
                 always { 
                     bat "echo '%date% - %job_name%'"
                 }
