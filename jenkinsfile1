@@ -36,7 +36,10 @@ pipeline {
                 bat "mvn clean checkstyle:checkstyle pmd:pmd"
                 echo "sacar reportes"
                 }
-            post {
+          }
+          
+        stage('deploy') {
+            when {
                 success {
                     agent {
                         label "deploy"
