@@ -3,8 +3,10 @@ pipeline {
 
    stages {
       stage('GIT+MVN') {
-         agent {'build'}
-            tools {
+         agent {
+                        label "build"
+                }
+         tools {
                maven "LocalMaven"
                jdk "LocalJDK8"
              }
@@ -22,8 +24,10 @@ pipeline {
       }
     
         stage('git-mvn-checkstyle-pwd') {
-             agent {'quality'}
-                tools {
+             agent {
+                        label "quality"
+                }
+             tools {
                   maven "LocalMaven"
                   jdk "LocalJDK8"
                   }
@@ -34,13 +38,17 @@ pipeline {
                 }
             post {
                 success {
-                    agent {'deploy'}
+                    agent {
+                        label "deploy"
+                     }
                     echo 'carga artefacto y deploy prod'
                     copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: 'groovy-05-pipeline-git-mvn-copy-deploy', selector: lastSuccessful()
                     deploy adapters: [tomcat8(credentialsId: 'a84b8492-d214-4c65-a53d-18fb41c4ce7b', path: '', url: 'http://localhosts:8081')], contextPath: null, war: '**/*.war'
                 }
                 unstable { 
-                    agent {'deploy'}
+                    agent {
+                        label "deploy"
+                     }
                     echo 'carga artefacto y deploy dev'
                     copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: 'groovy-05-pipeline-git-mvn-copy-deploy', selector: last()
                     deploy adapters: [tomcat8(credentialsId: 'a84b8492-d214-4c65-a53d-18fb41c4ce7b', path: '', url: 'http://localhosts:8082')], contextPath: null, war: '**/*.war'
