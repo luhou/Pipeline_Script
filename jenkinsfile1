@@ -42,7 +42,7 @@ pipeline {
                     agent { label "deploy" }
              steps {
                     echo 'Despliego artefacto'
-                    copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: 'groovy-05-pipeline-git-mvn-copy-deploy', selector: lastSuccessful()
+                    copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: 'groovy-05-pipeline-git-mvn-copy-deploy', selector:  lastWithArtifacts()
                     deploy adapters: [tomcat8(credentialsId: 'a84b8492-d214-4c65-a53d-18fb41c4ce7b', path: '', url: 'http://localhosts:8081')], contextPath: null, war: '**/*.war'
                }
          }
