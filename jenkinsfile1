@@ -2,7 +2,7 @@ pipeline {
    agent any
 
    stages {
-      stage('GIT+MVN') {
+      stage('BUILD') {
          agent {
                         label "build"
                 }
@@ -11,7 +11,7 @@ pipeline {
                jdk "LocalJDK8"
              }
          steps {
-            echo "Conexión a GIT"
+            echo "Descarga GIT y construcción"
             git 'https://github.com/luhou/Spring3MVC.git'
             bat "mvn clean package"
          }
